@@ -1,0 +1,22 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "Node-js package with which you could compare two configuration files and see a difference.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/julimalinna/frontend-project-lvl2.git"
+  },
+  "author": "Julia Malinina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/julimalinna/frontend-project-lvl2/issues"
+  },
+  "homepage": "https://github.com/julimalinna/frontend-project-lvl2#readme",
+  "dependencies": {
+    "commander": "^7.0.0"
+  }
+}
