@@ -3,8 +3,8 @@ import fs from 'fs';
 import uniq from 'lodash/fp/uniq.js';
 
 const genDiff = (filepath1, filepath2) => {
-  const fullFilepath1 = path.resolve(process.cwd(filepath1), filepath1);
-  const fullFilepath2 = path.resolve(process.cwd(filepath2), filepath2);
+  const fullFilepath1 = path.resolve(process.cwd(filepath1), '__fixtures__', filepath1);
+  const fullFilepath2 = path.resolve(process.cwd(filepath2), '__fixtures__', filepath2);
 
   const contentFilepath1 = fs.readFileSync(fullFilepath1);
   const contentFilepath2 = fs.readFileSync(fullFilepath2);
