@@ -9,3 +9,6 @@
 
 <h3>Compare two flat YAML files</h3>
 <a href="https://asciinema.org/a/391583" target="_blank"><img src="https://asciinema.org/a/391583.svg" /></a>
+
+<h3>Recursive comparison of two JSON files</h3>
+<a href="https://asciinema.org/a/394446" target="_blank"><img src="https://asciinema.org/a/394446.svg" /></a>
