@@ -4,6 +4,7 @@ import fs from 'fs';
 import { test, expect } from '@jest/globals';
 import yaml from 'js-yaml';
 import genDiff from '../src/index.js';
+import formatData from '../src/stylish.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,15 +16,18 @@ const expectedResultDeep = readFile('expected_result_deep.txt');
 test('flat json and yaml', () => {
   const file1Json = JSON.parse(readFile('file1.json'));
   const file2Json = JSON.parse(readFile('file2.json'));
-  expect(genDiff(file1Json, file2Json)).toEqual(expectedResult.trim());
+  const diffJson = genDiff(file1Json, file2Json);
+  expect(formatData(diffJson)).toEqual(expectedResult.trim());
 
   const file1Yaml = yaml.load(readFile('file1.yaml'));
   const file2Yaml = yaml.load(readFile('file2.yaml'));
-  expect(genDiff(file1Yaml, file2Yaml)).toEqual(expectedResult.trim());
+  const diffYaml = genDiff(file1Yaml, file2Yaml);
+  expect(formatData(diffYaml)).toEqual(expectedResult.trim());
 });
 
-test('deep json and yaml', () => {
+test('deep json', () => {
   const file1JsonDeep = JSON.parse(readFile('file1Deep.json'));
   const file2JsonDeep = JSON.parse(readFile('file2Deep.json'));
-  expect(genDiff(file1JsonDeep, file2JsonDeep)).toEqual(expectedResultDeep.trim());
+  const diff = genDiff(file1JsonDeep, file2JsonDeep);
+  expect(formatData(diff)).toEqual(expectedResultDeep.trim());
 });
