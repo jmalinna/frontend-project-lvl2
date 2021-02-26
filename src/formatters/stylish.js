@@ -1,5 +1,5 @@
-import showStatus from './status.js';
-import makeGap from './gap.js';
+import showStatus from '../status.js';
+import makeGap from '../gap.js';
 
 const showValues = (value, depthLevel) => {
   const keys = Object.keys(value);

@@ -1,5 +1,5 @@
 import uniq from 'lodash/fp/uniq.js';
-import Node from './node.js';
+import Node from '../node.js';
 
 const genDiff = (obj1, obj2, node = new Node()) => {
   const sortedKeys1 = Object.keys(obj1).sort();
