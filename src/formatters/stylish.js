@@ -13,7 +13,7 @@ const showValues = (value, depthLevel) => {
   return innerValue;
 };
 
-const formatData = (tree, depthLevel = 1) => {
+const makeStylish = (tree, depthLevel = 1) => {
   const nodes = tree.nodes ? tree.nodes : tree;
 
   const makeFlat = (acc, prop) => {
@@ -24,7 +24,7 @@ const formatData = (tree, depthLevel = 1) => {
     const gaps = depthLevel * 4 - 2;
 
     if (prop.nodes.length > 0) {
-      const deep = formatData(prop.nodes, depthLevel + 1);
+      const deep = makeStylish(prop.nodes, depthLevel + 1);
       acc.push(`${makeGap(gaps)}${showStatus(prop.status)} ${prop.key}: ${deep}`);
       return acc;
     }
@@ -63,4 +63,4 @@ const formatData = (tree, depthLevel = 1) => {
   const print = `{\n${makeString}\n${makeGap((depthLevel - 1) * 4)}}`;
   return print;
 };
-export default formatData;
+export default makeStylish;
