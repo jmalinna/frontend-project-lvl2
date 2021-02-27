@@ -1,30 +1,40 @@
+/* eslint-disable quotes */
+/* eslint-disable no-useless-escape */
 const getValue = (value) => {
   const keys = Object.keys(value);
   const innerValue = keys.map((key) => {
     if (value[key] !== null && typeof (value[key]) === 'object') {
-      return `${key}: ${getValue(value[key])}`;
+      return `"${key}":${getValue(value[key])}`;
     }
-    return `${key}: ${value[key]}`;
+    return `"${key}":${(value[key])}`;
   });
-  return `{ ${innerValue} }`;
+  return `{${innerValue}}`;
 };
+
+const isBoolean = (value) => {
+  if (value === '') {
+    return `\""`;
+  }
+  return !value || value === true || typeof value === 'number' ? value : `"${value}"`;
+};
+const isObject = (value) => (value !== null && typeof value === 'object' ? getValue(value) : value);
+const checkType = (value) => isBoolean(isObject(value));
 
 const innerJson = (tree) => {
   const nodes = tree.nodes.length > 0 ? tree.nodes : tree;
   const makeFlat = (acc, prop) => {
-    const isObject = (value) => (value !== null && typeof value === 'object' ? getValue(value) : value);
     switch (prop.status) {
       case 'unchanged key':
-        acc.push(`{ state: 'updated', ${prop.key}: ${innerJson(prop)} }`);
+        acc.push(`{"state":"updated","${prop.key}":${innerJson(prop)}}`);
         break;
       case 'changed':
-        acc.push(`{ state: 'updated', ${prop.key}: { valueBefore: ${isObject(prop.valueBefore)}, valueAfter: ${isObject(prop.valueAfter)}} }`);
+        acc.push(`{"state":"updated","${prop.key}":{"valueBefore":${checkType(prop.valueBefore)},"valueAfter":${checkType(prop.valueAfter)}}}`);
         break;
       case 'deleted':
-        acc.push(`{ state: 'deleted', ${prop.key}: ${isObject(prop.valueBefore)} }`);
+        acc.push(`{"state":"deleted","${prop.key}":${checkType(prop.valueBefore)}}`);
         break;
       case 'added':
-        acc.push(`{ state: 'added', ${prop.key}: ${isObject(prop.valueBefore)} }`);
+        acc.push(`{"state":"added","${prop.key}":${checkType(prop.valueBefore)}}`);
         break;
       default:
         return acc;
@@ -35,5 +45,5 @@ const innerJson = (tree) => {
   return arr;
 };
 
-const makeJson = (tree) => JSON.stringify(innerJson(tree));
+const makeJson = (tree) => innerJson(tree).join('');
 export default makeJson;
