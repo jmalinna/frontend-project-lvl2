@@ -1,4 +1,4 @@
-import checkType from '../typeChecker.js';
+import checkType from '../typeCheckerJson.js';
 
 const getValue = (value) => {
   const keys = Object.keys(value);
