@@ -15,3 +15,6 @@
 
 <h3>Plain output for a comparison of two files</h3>
 <a href="https://asciinema.org/a/394767" target="_blank"><img src="https://asciinema.org/a/394767.svg" /></a>
+
+<h3>Json output for a comparison of two files</h3>
+<a href="https://asciinema.org/a/395227" target="_blank"><img src="https://asciinema.org/a/395227.svg" /></a>
