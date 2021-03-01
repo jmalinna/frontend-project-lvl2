@@ -1,6 +1,6 @@
-import showStatus from '../src/status.js';
-import makeGap from '../src/gap.js';
-import isObject from '../src/typeCheckerStylish.js';
+import showStatus from '../status.js';
+import makeGap from '../gap.js';
+import isObject from '../typeCheckerStylish.js';
 
 const gapDifference = 4;
 const showValues = (value, depthLevel) => {

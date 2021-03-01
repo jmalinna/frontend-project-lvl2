@@ -1,6 +1,6 @@
 import uniq from 'lodash/fp/uniq.js';
-import Node from '../src/node.js';
-import compareArrays from '../src/compareArrays.js';
+import Node from '../node.js';
+import compareArrays from '../compareArrays.js';
 
 const createTree = (obj1, obj2, node = new Node()) => {
   const keys1 = Object.keys(obj1);
