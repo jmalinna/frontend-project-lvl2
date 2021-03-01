@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import commander from 'commander';
-import genDiff from '../src/formatters/index.js';
+import genDiff from '../formatters/index.js';
 
 commander
   .version('1.0.0')
