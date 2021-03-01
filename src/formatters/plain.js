@@ -4,6 +4,8 @@ const isBoolean = (value) => {
   switch (value) {
     case true:
       return true;
+    case typeof value === 'number':
+      return value;
     case '[complex value]':
       return '[complex value]';
     case '':

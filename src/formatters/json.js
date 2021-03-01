@@ -28,6 +28,6 @@ const makeJson = (tree) => {
     return acc;
   };
   const json = nodes.reduce(makeFlat, []).join(',');
-  return json;
+  return json.trim();
 };
 export default makeJson;
