@@ -2,10 +2,10 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
 import yaml from 'js-yaml';
-import createTree from '../src/formatters/tree.js';
-import makeStylish from '../src/formatters/stylish.js';
-import makePlain from '../src/formatters/plain.js';
-import makeJson from '../src/formatters/json.js';
+import createTree from '../formatters/tree.js';
+import makeStylish from '../formatters/stylish.js';
+import makePlain from '../formatters/plain.js';
+import makeJson from '../formatters/json.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

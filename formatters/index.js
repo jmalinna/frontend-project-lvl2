@@ -1,8 +1,8 @@
-import createTree from './formatters/tree.js';
-import makePlain from './formatters/plain.js';
-import makeStylish from './formatters/stylish.js';
-import buildPathAndParse from './parsers.js';
-import makeJson from './formatters/json.js';
+import createTree from './tree.js';
+import makePlain from './plain.js';
+import makeStylish from './stylish.js';
+import buildPathAndParse from '../src/parsers.js';
+import makeJson from './json.js';
 
 const genDiff = (filepath1, filepath2, formatName = 'stylish') => {
   const parsedPath1 = buildPathAndParse(filepath1);
