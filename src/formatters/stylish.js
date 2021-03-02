@@ -16,7 +16,6 @@ const showValues = (value, depthLevel) => {
 };
 
 const makeStylish = (tree, depthLevel = 1) => {
-  console.log('tree = ', tree);
   const nodes = tree.nodes ? tree.nodes : tree;
   const gapAndSign = 2;
   const gaps = depthLevel * gapDifference - gapAndSign;
