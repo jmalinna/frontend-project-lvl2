@@ -2,7 +2,7 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "Node-js package with which you could compare two configuration files and see a difference.",
-  "main": "index.js",
+  "main": "src/formatters/index.js",
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
