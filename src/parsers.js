@@ -4,9 +4,11 @@ import path from 'path';
 
 const buildPathAndParse = (filepath) => {
   const fullFilepath = path.resolve(process.cwd(filepath), '__fixtures__', filepath);
+  console.log('fullFilepath = ', fullFilepath);
   const contentFilepath = fs.readFileSync(fullFilepath);
 
   const format = path.extname(filepath);
+  console.log('format = ', format);
 
   if (format === '.json') {
     return JSON.parse(contentFilepath);
