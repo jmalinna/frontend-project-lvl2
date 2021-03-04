@@ -5,6 +5,7 @@ import buildPathAndParse from '../parsers.js';
 import makeJson from './json.js';
 
 const genDiff = (filepath1, filepath2, formatName = 'stylish') => {
+  console.log('formatName = ', formatName);
   const parsedPath1 = buildPathAndParse(filepath1);
   const parsedPath2 = buildPathAndParse(filepath2);
   const tree = createTree(parsedPath1, parsedPath2);
