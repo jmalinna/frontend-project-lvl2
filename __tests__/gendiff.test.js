@@ -5,7 +5,6 @@ import yaml from 'js-yaml';
 import createTree from '../src/formatters/tree.js';
 import makeStylish from '../src/formatters/stylish.js';
 import makePlain from '../src/formatters/plain.js';
-import makeJson from '../src/formatters/json.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,7 +13,6 @@ const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8'
 
 const expectedResultNested = readFile('expected_result_nested.txt');
 const expectedResultPlain = readFile('expected_result_plain.txt');
-const expectedResultJson = readFile('expected_result_json.txt');
 const expectedResultYamlArray = readFile('expected_result_yaml.txt');
 const expectedResult2Yamls = readFile('expected_result_yaml2.txt');
 
@@ -36,11 +34,6 @@ test('nested json and yaml', () => {
 test('plain json', () => {
   const tree = createTree(file1Json, file2Json);
   expect(makePlain(tree)).toEqual(expectedResultPlain.trim());
-});
-
-test('json format', () => {
-  const tree = createTree(file1Json, file2Json);
-  expect(makeJson(tree)).toEqual(expectedResultJson.trim());
 });
 
 test('nested json and yaml with array', () => {

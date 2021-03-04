@@ -1,33 +1,31 @@
-import checkType from '../typeCheckerJson.js';
-
-const getValue = (value) => {
-  const keys = Object.keys(value);
-  const innerValue = keys.map((key) => `"${key}":${checkType(value[key], getValue)}`);
-  return innerValue;
-};
-
-const makeJson = (tree) => {
+const innerJson = (tree) => {
   const nodes = tree.nodes.length > 0 ? tree.nodes : tree;
   const makeFlat = (acc, prop) => {
     switch (prop.status) {
       case 'unchanged key':
-        acc.push(`{"state":"updated","${prop.key}":${makeJson(prop)}}`);
+        acc.push({ key: prop.key, state: 'updated', value: innerJson(prop) });
         break;
       case 'changed':
-        acc.push(`{"state":"updated","${prop.key}":{"valueBefore":${checkType(prop.valueBefore, getValue)},"valueAfter":${checkType(prop.valueAfter, getValue)}}}`);
+        acc.push({
+          key: prop.key, state: 'updated', valueBefore: prop.valueBefore, valueAfter: prop.valueAfter,
+        });
         break;
       case 'deleted':
-        acc.push(`{"state":"deleted","${prop.key}":${checkType(prop.valueBefore, getValue)}}`);
+        acc.push({ key: prop.key, state: prop.status, value: prop.valueBefore });
         break;
       case 'added':
-        acc.push(`{"state":"added","${prop.key}":${checkType(prop.valueBefore, getValue)}}`);
+        acc.push({ key: prop.key, state: prop.status, value: prop.valueBefore });
         break;
       default:
         return acc;
     }
     return acc;
   };
-  const json = nodes.reduce(makeFlat, []).join(',');
-  return json.trim();
+  const json = nodes.reduce(makeFlat, []);
+  return json;
+};
+const makeJson = (tree) => {
+  const result = innerJson(tree);
+  return JSON.stringify(result);
 };
 export default makeJson;
