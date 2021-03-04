@@ -9,12 +9,14 @@ const genDiff = (filepath1, filepath2, formatName = 'stylish') => {
   const parsedPath2 = buildPathAndParse(filepath2);
   const tree = createTree(parsedPath1, parsedPath2);
   switch (formatName) {
+    case 'stylish':
+      return makeStylish(tree);
     case 'plain':
       return makePlain(tree);
     case 'json':
       return makeJson(tree);
     default:
-      return makeStylish(tree);
+      return `Unknown formatter ${formatName}. Formatter must be stylish, plain or json`;
   }
 };
 export default genDiff;
