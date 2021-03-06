@@ -1,8 +1,8 @@
 import uniq from 'lodash/fp/uniq.js';
-import Node from '../node.js';
+import { makeNode, addNode } from '../node.js';
 import compareArrays from '../compareArrays.js';
 
-const createTree = (obj1, obj2, node = new Node()) => {
+const createTree = (obj1, obj2, node = makeNode()) => {
   const keys1 = Object.keys(obj1);
   const keys2 = Object.keys(obj2);
   const sortedCopyKeys1 = [...keys1].sort();
@@ -18,29 +18,30 @@ const createTree = (obj1, obj2, node = new Node()) => {
     const valuesAreArrays = Array.isArray(obj1[key]) && Array.isArray(obj2[key]);
 
     if (!obj2HasKey) {
-      tree.addNode('deleted', key, obj1[key]);
+      addNode(tree, 'deleted', key, obj1[key]);
     }
     if (!obj1HasKey) {
-      tree.addNode('added', key, obj2[key]);
+      addNode(tree, 'added', key, obj2[key]);
     }
     if (equalKeys && equalValues) {
-      tree.addNode('unchanged', key, obj1[key]);
+      addNode(tree, 'unchanged', key, obj1[key]);
     }
     if (equalKeys && valuesAreArrays) {
       const comparedValues = compareArrays(obj1[key], obj2[key]);
       if (comparedValues === 'equal') {
-        tree.addNode('unchanged', key, obj1[key]);
+        addNode(tree, 'unchanged', key, obj1[key]);
       } else {
-        tree.addNode('changed', key, obj1[key], obj2[key]);
+        addNode(tree, 'changed', key, obj1[key], obj2[key]);
       }
     }
     if (equalKeys && !equalValues && !valuesAreArrays) {
       if (typeof obj1[key] === 'object' && typeof obj2[key] === 'object') {
-        createTree(obj1[key], obj2[key], tree.addNode('unchanged key', key));
+        addNode(tree, 'unchanged key', key);
+        createTree(obj1[key], obj2[key], tree.nodes[tree.nodes.length - 1]);
         return tree;
       }
 
-      tree.addNode('changed', key, obj1[key], obj2[key]);
+      addNode(tree, 'changed', key, obj1[key], obj2[key]);
     }
     return tree;
   };

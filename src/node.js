@@ -1,22 +1,17 @@
-class Node {
-  constructor(status = null, key = null, valueBefore = null, valueAfter = null, nodes = []) {
-    this.status = status;
-    this.key = key;
-    this.valueBefore = valueBefore;
-    this.valueAfter = valueAfter;
-    this.nodes = nodes;
-  }
+/* eslint-disable arrow-body-style */
+const makeNode = (status = null, key = null, valueBefore = null, valueAfter = null, nodes = []) => {
+  return {
+    status, key, valueBefore, valueAfter, nodes,
+  };
+};
 
-  addNode(status, key, valueBefore, valueAfter, nodes) {
-    const node = new Node(
-      status, key, valueBefore, valueAfter, nodes,
-    );
-    this.nodes.push(node);
-    return node;
+const addNode = (tree, status, key, valueBefore, valueAfter, nodes) => {
+  const innerTree = tree;
+  if (tree.nodes.length > 0) {
+    innerTree.nodes = [...tree.nodes, makeNode(status, key, valueBefore, valueAfter, nodes)];
+  } else {
+    innerTree.nodes = [makeNode(status, key, valueBefore, valueAfter, nodes)];
   }
-
-  getChildren() {
-    return this.nodes;
-  }
-}
-export default Node;
+  return tree;
+};
+export { makeNode, addNode };
