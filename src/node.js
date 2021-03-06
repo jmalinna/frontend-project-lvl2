@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable arrow-body-style */
 const makeNode = (status = null, key = null, valueBefore = null, valueAfter = null, nodes = []) => {
   return {
@@ -6,11 +7,10 @@ const makeNode = (status = null, key = null, valueBefore = null, valueAfter = nu
 };
 
 const addNode = (tree, status, key, valueBefore, valueAfter, nodes) => {
-  const innerTree = tree;
   if (tree.nodes.length > 0) {
-    innerTree.nodes = [...tree.nodes, makeNode(status, key, valueBefore, valueAfter, nodes)];
+    tree.nodes = [...tree.nodes, makeNode(status, key, valueBefore, valueAfter, nodes)];
   } else {
-    innerTree.nodes = [makeNode(status, key, valueBefore, valueAfter, nodes)];
+    tree.nodes = [makeNode(status, key, valueBefore, valueAfter, nodes)];
   }
   return tree;
 };
