@@ -42,7 +42,7 @@ test('nested json and yaml with array', () => {
 });
 
 test('nested yamls with arrays', () => {
-  const file1YamlDeep1 = yaml.load(readFile('nested_array_2.yaml'));
-  const tree = createTree(file1YamlDeep1, file2Yaml);
+  const file1YamlDeep = yaml.load(readFile('nested_array_2.yaml'));
+  const tree = createTree(file1YamlDeep, file2Yaml);
   expect(makeStylish(tree)).toEqual(expectedResult2Yamls.trim());
 });

@@ -1,28 +1,24 @@
 const innerJson = (tree) => {
-  const nodes = tree.nodes.length > 0 ? tree.nodes : tree;
-  const makeFlat = (acc, prop) => {
+  const nodes = tree.nodes ? tree.nodes : tree;
+  const makeFlat = (prop) => {
     switch (prop.status) {
       case 'unchanged key':
-        acc.push({ key: prop.key, state: 'updated', value: innerJson(prop) });
-        break;
+        return { key: prop.key, state: 'updated', value: innerJson(prop) };
       case 'changed':
-        acc.push({
+        return {
           key: prop.key, state: 'updated', valueBefore: prop.valueBefore, valueAfter: prop.valueAfter,
-        });
-        break;
+        };
       case 'deleted':
-        acc.push({ key: prop.key, state: prop.status, value: prop.valueBefore });
-        break;
+        return { key: prop.key, state: prop.status, value: prop.valueBefore };
       case 'added':
-        acc.push({ key: prop.key, state: prop.status, value: prop.valueBefore });
-        break;
+        return { key: prop.key, state: prop.status, value: prop.valueBefore };
       default:
-        return acc;
+        return null;
     }
-    return acc;
   };
-  const json = nodes.reduce(makeFlat, []);
-  return json;
+  const json = nodes.map((prop) => makeFlat(prop));
+  const filteredJson = json.filter((element) => element !== null);
+  return filteredJson;
 };
 const makeJson = (tree) => {
   const result = innerJson(tree);

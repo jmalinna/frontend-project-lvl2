@@ -20,35 +20,28 @@ const makeStylish = (tree, depthLevel = 1) => {
   const gapAndSign = 2;
   const gaps = depthLevel * gapDifference - gapAndSign;
 
-  const makeFlat = (acc, prop) => {
+  const makeFlat = (prop) => {
     const valueBeforeIsObj = typeof prop.valueBefore === 'object';
     const valueIsObject = prop.valueBefore && valueBeforeIsObj ? prop.valueBefore : prop.valueAfter;
 
-    if (prop.nodes.length > 0) {
+    if (prop.nodes) {
       const nestedValue = makeStylish(prop.nodes, depthLevel + 1);
-      acc.push(`${makeGap(gaps)}${showStatus(prop.status)} ${prop.key}: ${nestedValue}`);
-      return acc;
+      return `${makeGap(gaps)}${showStatus(prop.status)} ${prop.key}: ${nestedValue}`;
     }
-    if (prop.nodes.length < 1 && valueIsObject) {
+    if (!prop.nodes && valueIsObject) {
       if (prop.status === 'changed') {
-        acc.push(`${makeGap(gaps)}- ${prop.key}: ${isObject(prop.valueBefore, gaps, depthLevel + 1, showValues)}`);
-        acc.push(`${makeGap(gaps)}+ ${prop.key}: ${isObject(prop.valueAfter, gaps, depthLevel + 1, showValues)}`);
-      } else {
-        acc.push(`${makeGap(gaps)}${showStatus(prop.status)} ${prop.key}: ${isObject(valueIsObject, gaps, depthLevel + 1, showValues)}`);
+        return `${makeGap(gaps)}- ${prop.key}: ${isObject(prop.valueBefore, gaps, depthLevel + 1, showValues)}\n${makeGap(gaps)}+ ${prop.key}: ${isObject(prop.valueAfter, gaps, depthLevel + 1, showValues)}`;
       }
-      return acc;
+      return `${makeGap(gaps)}${showStatus(prop.status)} ${prop.key}: ${isObject(valueIsObject, gaps, depthLevel + 1, showValues)}`;
     }
 
     if (prop.status === 'changed') {
-      acc.push(`${makeGap(gaps)}- ${prop.key}: ${prop.valueBefore}`);
-      acc.push(`${makeGap(gaps)}+ ${prop.key}: ${prop.valueAfter}`);
-    } else {
-      acc.push(`${makeGap(gaps)}${showStatus(prop.status)} ${prop.key}: ${prop.valueBefore}`);
+      return `${makeGap(gaps)}- ${prop.key}: ${prop.valueBefore}\n${makeGap(gaps)}+ ${prop.key}: ${prop.valueAfter}`;
     }
-    return acc;
+    return `${makeGap(gaps)}${showStatus(prop.status)} ${prop.key}: ${prop.valueBefore}`;
   };
 
-  const makeString = nodes.reduce(makeFlat, []).join('\n');
+  const makeString = nodes.map((prop) => makeFlat(prop)).join('\n');
   const print = `{\n${makeString}\n${makeGap((depthLevel - 1) * gapDifference)}}`;
   return print;
 };

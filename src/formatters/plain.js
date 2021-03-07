@@ -18,36 +18,37 @@ const isComplexValue = (value) => (typeof value === 'object' && value !== null ?
 const isStr = (value) => isBoolean(value);
 
 const makePlain = (tree, key = '') => {
-  const nodes = tree.nodes.length > 0 ? tree.nodes : tree;
+  const nodes = tree.nodes ? tree.nodes : tree;
 
-  const makeFlat = (acc, prop) => {
+  const makeFlat = (prop) => {
     const valueIsObj = typeof prop.valueBefore === 'object';
     const valueIsNull = prop.valueBefore === null;
 
     if (prop.status === 'deleted') {
-      acc.push(`Property '${key}${prop.key}' was removed`);
+      return `Property '${key}${prop.key}' was removed`;
     }
 
-    if (prop.status === 'unchanged key' && prop.nodes.length > 0) {
-      acc.push(makePlain(prop, `${key}${prop.key}.`));
+    if (prop.status === 'unchanged key' && prop.nodes) {
+      return makePlain(prop, `${key}${prop.key}.`);
     }
 
     if (prop.status === 'changed' && key) {
       const value1 = isComplexValue(prop.valueBefore);
       const value2 = isComplexValue(prop.valueAfter);
-      acc.push(`Property '${key}${prop.key}' was updated. From ${isStr(value1)} to ${isStr(value2)}`);
+      return `Property '${key}${prop.key}' was updated. From ${isStr(value1)} to ${isStr(value2)}`;
     }
 
     if (prop.status === 'added' && !valueIsNull && valueIsObj) {
-      acc.push(`Property '${key}${prop.key}' was added with value: [complex value]`);
-    } else if (prop.status === 'added' && (valueIsNull || !valueIsObj)) {
-      acc.push(`Property '${key}${prop.key}' was added with value: ${isBoolean(prop.valueBefore)}`);
+      return `Property '${key}${prop.key}' was added with value: [complex value]`;
     }
-
-    return acc;
+    if (prop.status === 'added' && (valueIsNull || !valueIsObj)) {
+      return `Property '${key}${prop.key}' was added with value: ${isBoolean(prop.valueBefore)}`;
+    }
+    return null;
   };
 
-  const makeString = nodes.reduce(makeFlat, []).join('\n');
-  return makeString;
+  const editedOutput = nodes.map((prop) => makeFlat(prop));
+  const filteredElements = editedOutput.filter((element) => element !== null);
+  return filteredElements.join('\n');
 };
 export default makePlain;
