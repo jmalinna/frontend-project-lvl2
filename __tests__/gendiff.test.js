@@ -1,48 +1,38 @@
 import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
-import yaml from 'js-yaml';
-import createTree from '../src/formatters/tree.js';
-import makeStylish from '../src/formatters/stylish.js';
-import makePlain from '../src/formatters/plain.js';
+import genDiff from '../src/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 
-const expectedResultNested = readFile('expected_result_nested.txt');
-const expectedResultPlain = readFile('expected_result_plain.txt');
-const expectedResultYamlArray = readFile('expected_result_yaml.txt');
-const expectedResult2Yamls = readFile('expected_result_yaml2.txt');
+const file1Stylish = readFile('file1_after_stylish.txt');
+const file2Plain = readFile('file2_after_plain.txt');
+const file3Stylish = readFile('file3_after_stylish.txt');
+const file4Json = readFile('file4_after_json.txt');
 
-const file1Json = JSON.parse(readFile('nested_1.json'));
-const file2Json = JSON.parse(readFile('nested_2.json'));
-const file2Yaml = yaml.load(readFile('nested_array_1.yaml'));
+const file1Json = getFixturePath('file1_before.json');
+const file2Json = getFixturePath('file2_before.json');
+const file2Yaml = getFixturePath('file2_before.yaml');
 
-test('nested json', () => {
-  const tree = createTree(file1Json, file2Json);
-  expect(makeStylish(tree)).toEqual(expectedResultNested.trim());
+test('stylish with json', () => {
+  const diff = genDiff(file1Json, file2Json);
+  expect(diff).toEqual(file1Stylish.trim());
 });
 
-test('nested json and yaml', () => {
-  const nestedYaml = yaml.load(readFile('nested_2.yaml'));
-  const tree = createTree(file1Json, nestedYaml);
-  expect(makeStylish(tree)).toEqual(expectedResultNested.trim());
+test('stylish with json and yaml', () => {
+  const diff = genDiff(file1Json, file2Yaml);
+  expect(diff).toEqual(file3Stylish.trim());
 });
 
-test('plain json', () => {
-  const tree = createTree(file1Json, file2Json);
-  expect(makePlain(tree)).toEqual(expectedResultPlain.trim());
+test('plain', () => {
+  const diff = genDiff(file1Json, file2Json, 'plain');
+  expect(diff).toEqual(file2Plain.trim());
 });
 
-test('nested json and yaml with array', () => {
-  const tree = createTree(file1Json, file2Yaml);
-  expect(makeStylish(tree)).toEqual(expectedResultYamlArray.trim());
-});
-
-test('nested yamls with arrays', () => {
-  const file1YamlDeep = yaml.load(readFile('nested_array_2.yaml'));
-  const tree = createTree(file1YamlDeep, file2Yaml);
-  expect(makeStylish(tree)).toEqual(expectedResult2Yamls.trim());
+test('json', () => {
+  const diff = genDiff(file1Json, file2Json, 'json');
+  expect(diff).toEqual(file4Json.trim());
 });
