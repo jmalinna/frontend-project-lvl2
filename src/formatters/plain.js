@@ -41,6 +41,7 @@ const makePlain = (tree, key = '') => {
     if (prop.status === 'added' && !valueIsNull && valueIsObj) {
       return `Property '${key}${prop.key}' was added with value: [complex value]`;
     }
+
     if (prop.status === 'added' && (valueIsNull || !valueIsObj)) {
       return `Property '${key}${prop.key}' was added with value: ${isBoolean(prop.valueBefore)}`;
     }
