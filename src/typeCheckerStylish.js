@@ -1,7 +1,6 @@
-import makeGap from './gap.js';
-
 const isObject = (value, gaps, depthLevel, func) => {
   const signAndGap = 2;
+  const gap = ' ';
 
   if (Array.isArray(value)) {
     return `[${value.join(', ')}]`;
@@ -11,6 +10,6 @@ const isObject = (value, gaps, depthLevel, func) => {
   }
 
   const innerValue = func(value, depthLevel).join('');
-  return `{${innerValue}\n${makeGap(gaps + signAndGap)}}`;
+  return `{${innerValue}\n${gap.repeat(gaps + signAndGap)}}`;
 };
 export default isObject;

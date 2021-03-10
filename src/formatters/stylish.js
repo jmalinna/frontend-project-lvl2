@@ -1,8 +1,9 @@
 import showStatus from '../status.js';
-import makeGap from '../gap.js';
 import isObject from '../typeCheckerStylish.js';
 
 const gapDifference = 4;
+const makeGap = (num, gap = ' ') => gap.repeat(num);
+
 const showValues = (value, depthLevel) => {
   const gaps = depthLevel * gapDifference;
   const keys = Object.keys(value);

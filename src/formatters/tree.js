@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import compareArrays from '../compareArrays.js';
 
 const createTree = (obj1, obj2) => {
   const keys1 = Object.keys(obj1);
@@ -26,8 +25,8 @@ const createTree = (obj1, obj2) => {
       return { key, status: 'unchanged', valueBefore: obj1[key] };
     }
     if (equalKeys && valuesAreArrays) {
-      const comparedValues = compareArrays(obj1[key], obj2[key]);
-      if (comparedValues === 'equal') {
+      const sameValues = obj1[key].filter((value) => obj2[key].includes(value));
+      if (sameValues.length === obj1[key].length) {
         return { key, status: 'unchanged', valueBefore: obj1[key] };
       }
       return {
