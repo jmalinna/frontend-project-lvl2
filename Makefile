@@ -1,9 +1,6 @@
 install:
 	npm install
 
-run:
-	bin/gendiff.js
-
 lint:
 	npx eslint .
 
