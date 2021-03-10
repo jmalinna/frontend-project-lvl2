@@ -4,7 +4,7 @@
   "description": "Node-js package with which you could compare two configuration files and see a difference.",
   "main": "src/index.js",
   "scripts": {
-    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+    "test": "npx jest"
   },
   "repository": {
     "type": "git",
