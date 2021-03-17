@@ -1,5 +1,33 @@
-import showStatus from '../status.js';
-import isObject from '../typeCheckerStylish.js';
+const showStatus = (status) => {
+  switch (status) {
+    case 'unchanged key':
+      return ' ';
+    case 'unchanged':
+      return ' ';
+    case 'added':
+      return '+';
+    case 'deleted':
+      return '-';
+    default:
+      console.log(`Unknown status "${status}"`);
+  }
+  return `Unknown status "${status}"`;
+};
+
+const isObject = (value, gaps, depthLevel, func) => {
+  const signAndGap = 2;
+  const gap = ' ';
+
+  if (Array.isArray(value)) {
+    return `[${value.join(', ')}]`;
+  }
+  if (!value || typeof value !== 'object') {
+    return value;
+  }
+
+  const innerValue = func(value, depthLevel).join('');
+  return `{${innerValue}\n${gap.repeat(gaps + signAndGap)}}`;
+};
 
 const gapDifference = 4;
 const makeGap = (num, gap = ' ') => gap.repeat(num);

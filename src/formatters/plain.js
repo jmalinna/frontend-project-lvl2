@@ -1,6 +1,10 @@
-/* eslint-disable quotes */
-/* eslint-disable no-useless-escape */
-const isBoolean = (value) => {
+const stringify = (value) => {
+  const innerValue = typeof value === 'object' && value !== null ? '[complex value]' : value;
+
+  if (innerValue === '[complex value]') {
+    return innerValue;
+  }
+
   switch (value) {
     case true:
       return true;
@@ -9,13 +13,11 @@ const isBoolean = (value) => {
     case '[complex value]':
       return '[complex value]';
     case '':
-      return `\''`;
+      return "''";
     default:
       return !value ? value : `'${value}'`;
   }
 };
-const isComplexValue = (value) => (typeof value === 'object' && value !== null ? '[complex value]' : value);
-const isStr = (value) => isBoolean(value);
 
 const makePlain = (tree, key = '') => {
   const nodes = tree.nodes ? tree.nodes : tree;
@@ -33,9 +35,9 @@ const makePlain = (tree, key = '') => {
     }
 
     if (prop.status === 'changed' && key) {
-      const value1 = isComplexValue(prop.valueBefore);
-      const value2 = isComplexValue(prop.valueAfter);
-      return `Property '${key}${prop.key}' was updated. From ${isStr(value1)} to ${isStr(value2)}`;
+      const valueBefore = stringify(prop.valueBefore);
+      const valueAfter = stringify(prop.valueAfter);
+      return `Property '${key}${prop.key}' was updated. From ${valueBefore} to ${valueAfter}`;
     }
 
     if (prop.status === 'added' && !valueIsNull && valueIsObj) {
@@ -43,7 +45,7 @@ const makePlain = (tree, key = '') => {
     }
 
     if (prop.status === 'added' && (valueIsNull || !valueIsObj)) {
-      return `Property '${key}${prop.key}' was added with value: ${isBoolean(prop.valueBefore)}`;
+      return `Property '${key}${prop.key}' was added with value: ${stringify(prop.valueBefore)}`;
     }
     return null;
   };
