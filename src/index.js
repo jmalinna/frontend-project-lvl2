@@ -4,17 +4,20 @@ import selectFormatter from './formatters/index.js';
 import createTree from './formatters/tree.js';
 import parse from './parsers.js';
 
-const genDiff = (filepath1, filepath2, formatName = 'stylish') => {
-  const getFullFilepath = (filepath) => path.resolve(process.cwd(filepath), filepath);
-  const readFile = (fullFilepath) => fs.readFileSync(fullFilepath);
+const getFullFilepath = (filepath) => path.resolve(process.cwd(filepath), filepath);
+const readFile = (fullFilepath) => fs.readFileSync(fullFilepath);
 
+const genDiff = (filepath1, filepath2, formatName = 'stylish') => {
   const fullFilepath1 = getFullFilepath(filepath1);
   const fullFilepath2 = getFullFilepath(filepath2);
   const file1Content = readFile(fullFilepath1);
   const file2Content = readFile(fullFilepath2);
 
-  const parsedPath1 = parse(filepath1, file1Content);
-  const parsedPath2 = parse(filepath2, file2Content);
+  const file1Format = path.extname(filepath1);
+  const file2Format = path.extname(filepath2);
+
+  const parsedPath1 = parse(file1Format, file1Content);
+  const parsedPath2 = parse(file2Format, file2Content);
   const tree = createTree(parsedPath1, parsedPath2);
   const formattedData = selectFormatter(tree, formatName);
   return formattedData;

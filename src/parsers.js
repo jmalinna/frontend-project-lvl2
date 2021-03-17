@@ -1,19 +1,14 @@
 import yaml from 'js-yaml';
-import path from 'path';
 
-const parse = (filepath, fileContent) => {
-  const format = path.extname(filepath);
-
-  if (format === '.json') {
-    return JSON.parse(fileContent);
-  }
-  if (format === '.yaml' || format === '.yml') {
-    try {
+const parse = (format, fileContent) => {
+  switch (format) {
+    case '.json':
+      return JSON.parse(fileContent);
+    case '.yaml':
+    case '.yml':
       return yaml.load(fileContent);
-    } catch (e) {
-      console.log(e);
-    }
+    default:
+      return 'Unappropriate file format. Format must be .json, .yaml or .yml';
   }
-  return 'Unappropriate file format. Format must be .json or .yaml / .yml';
 };
 export default parse;
