@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import selectFormatter from './formatters/index.js';
-import createTree from './formatters/tree.js';
+import createTree from './tree.js';
 import parse from './parsers.js';
 
 const getFullFilepath = (filepath) => path.resolve(process.cwd(filepath), filepath);
