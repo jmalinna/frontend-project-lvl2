@@ -5,7 +5,7 @@ import createTree from './formatters/tree.js';
 import parse from './parsers.js';
 
 const genDiff = (filepath1, filepath2, formatName = 'stylish') => {
-  const getFullFilepath = (filepath) => path.resolve(process.cwd(filepath), '__fixtures__', filepath);
+  const getFullFilepath = (filepath) => path.resolve(process.cwd(filepath), filepath);
   const readFile = (fullFilepath) => fs.readFileSync(fullFilepath);
 
   const fullFilepath1 = getFullFilepath(filepath1);
