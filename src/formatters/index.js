@@ -1,6 +1,5 @@
 import makePlain from './plain.js';
 import makeStylish from './stylish.js';
-import makeJson from './json.js';
 
 const selectFormatter = (tree, formatName) => {
   switch (formatName) {
@@ -9,7 +8,7 @@ const selectFormatter = (tree, formatName) => {
     case 'plain':
       return makePlain(tree);
     case 'json':
-      return makeJson(tree);
+      return JSON.stringify(tree);
     default:
       return `Unknown formatter ${formatName}. Formatter must be stylish, plain or json`;
   }
