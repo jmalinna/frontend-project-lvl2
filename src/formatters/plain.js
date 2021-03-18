@@ -20,8 +20,6 @@ const stringify = (value) => {
 };
 
 const makePlain = (tree, key = '') => {
-  const nodes = tree.nodes ? tree.nodes : tree;
-
   const makeFlat = (prop) => {
     const valueIsObj = typeof prop.valueBefore === 'object';
     const valueIsNull = prop.valueBefore === null;
@@ -31,7 +29,7 @@ const makePlain = (tree, key = '') => {
     }
 
     if (prop.status === 'unchanged key' && prop.nodes) {
-      return makePlain(prop, `${key}${prop.key}.`);
+      return makePlain(prop.nodes, `${key}${prop.key}.`);
     }
 
     if (prop.status === 'changed' && key) {
@@ -50,7 +48,7 @@ const makePlain = (tree, key = '') => {
     return null;
   };
 
-  const editedOutput = nodes.map((prop) => makeFlat(prop));
+  const editedOutput = tree.map((prop) => makeFlat(prop));
   const filteredElements = editedOutput.filter((element) => element !== null);
   return filteredElements.join('\n');
 };

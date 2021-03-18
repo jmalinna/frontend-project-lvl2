@@ -45,7 +45,6 @@ const showValues = (value, depthLevel) => {
 };
 
 const makeStylish = (tree, depthLevel = 1) => {
-  const nodes = tree.nodes ? tree.nodes : tree;
   const gapAndSign = 2;
   const gaps = depthLevel * gapDifference - gapAndSign;
 
@@ -70,7 +69,7 @@ const makeStylish = (tree, depthLevel = 1) => {
     return `${makeGap(gaps)}${showStatus(prop.status)} ${prop.key}: ${prop.valueBefore}`;
   };
 
-  const makeString = nodes.map((prop) => makeFlat(prop)).join('\n');
+  const makeString = tree.map((prop) => makeFlat(prop)).join('\n');
   const print = `{\n${makeString}\n${makeGap((depthLevel - 1) * gapDifference)}}`;
   return print;
 };
