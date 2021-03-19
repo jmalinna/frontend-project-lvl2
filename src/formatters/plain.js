@@ -12,28 +12,25 @@ const stringify = (value) => {
 
 const innerMakePlain = (tree, key = '') => {
   const makeFlat = (prop) => {
-    if (prop.status === 'deleted') {
-      return `Property '${key}${prop.key}' was removed`;
+    switch (prop.status) {
+      case 'unchanged':
+        return '';
+      case 'unchanged key':
+        return innerMakePlain(prop.nodes, `${key}${prop.key}.`);
+      case 'deleted':
+        return `Property '${key}${prop.key}' was removed`;
+      case 'changed':
+        return `Property '${key}${prop.key}' was updated. From ${stringify(prop.valueBefore)} to ${stringify(prop.valueAfter)}`;
+      case 'added':
+        return `Property '${key}${prop.key}' was added with value: ${stringify(prop.valueBefore)}`;
+      default:
+        return `Unknown status ${prop.status}`;
     }
-
-    if (prop.status === 'unchanged key' && prop.nodes) {
-      return innerMakePlain(prop.nodes, `${key}${prop.key}.`);
-    }
-
-    if (prop.status === 'changed') {
-      return `Property '${key}${prop.key}' was updated. From ${stringify(prop.valueBefore)} to ${stringify(prop.valueAfter)}`;
-    }
-
-    if (prop.status === 'added') {
-      return `Property '${key}${prop.key}' was added with value: ${stringify(prop.valueBefore)}`;
-    }
-
-    return null;
   };
-
   const editedOutput = tree.map((prop) => makeFlat(prop));
-  const filteredElements = editedOutput.filter((element) => element !== null);
+  const filteredElements = editedOutput.filter((element) => element !== '');
   return filteredElements.join('\n');
 };
+
 const makePlain = (tree) => innerMakePlain(tree);
 export default makePlain;

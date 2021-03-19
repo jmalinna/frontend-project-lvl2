@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 const showStatus = (status) => {
   switch (status) {
     case 'unchanged key':
@@ -13,57 +15,48 @@ const showStatus = (status) => {
   }
 };
 
-const isObject = (value, gaps, depthLevel, func) => {
-  const signAndGap = 2;
-  const gap = ' ';
-
-  if (Array.isArray(value)) {
-    return `[${value.join(', ')}]`;
-  }
-  if (!value || typeof value !== 'object') {
-    return value;
-  }
-
-  const innerValue = func(value, depthLevel).join('');
-  return `{${innerValue}\n${gap.repeat(gaps + signAndGap)}}`;
-};
-
 const gapDifference = 4;
 const makeGap = (num, gap = ' ') => gap.repeat(num);
 
 const showValues = (value, depthLevel) => {
   const gaps = depthLevel * gapDifference;
+  if (Array.isArray(value)) {
+    return `[${value.join(', ')}]`;
+  }
   const keys = Object.keys(value);
   const innerValue = keys.map((key) => {
-    if (typeof value[key] === 'object' && value[key]) {
+    if (_.isObject(value[key])) {
       return `\n${makeGap(gaps)}${key}: {${showValues(value[key], depthLevel + 1)}\n${makeGap(gaps)}}`;
     }
     return `\n${makeGap(gaps)}${key}: ${value[key]}`;
   });
-  return innerValue;
+  return innerValue.join('');
 };
 
 const makeStylish = (tree, depthLevel = 1) => {
   const gapAndSign = 2;
   const gaps = depthLevel * gapDifference - gapAndSign;
+  const signAndGap = 2;
 
   const makeFlat = (prop) => {
-    const valueBeforeIsObj = typeof prop.valueBefore === 'object';
-    const valueIsObject = prop.valueBefore && valueBeforeIsObj ? prop.valueBefore : prop.valueAfter;
-
     if (prop.nodes) {
       const nestedValue = makeStylish(prop.nodes, depthLevel + 1);
       return `${makeGap(gaps)}${showStatus(prop.status)} ${prop.key}: ${nestedValue}`;
     }
-    if (!prop.nodes && valueIsObject) {
-      if (prop.status === 'changed') {
-        return `${makeGap(gaps)}- ${prop.key}: ${isObject(prop.valueBefore, gaps, depthLevel + 1, showValues)}\n${makeGap(gaps)}+ ${prop.key}: ${isObject(prop.valueAfter, gaps, depthLevel + 1, showValues)}`;
-      }
-      return `${makeGap(gaps)}${showStatus(prop.status)} ${prop.key}: ${isObject(valueIsObject, gaps, depthLevel + 1, showValues)}`;
-    }
 
     if (prop.status === 'changed') {
-      return `${makeGap(gaps)}- ${prop.key}: ${prop.valueBefore}\n${makeGap(gaps)}+ ${prop.key}: ${prop.valueAfter}`;
+      const isObj = (value) => {
+        if (Array.isArray(value)) {
+          return `${showValues(value, depthLevel + 1)}`;
+        }
+        return _.isObject(value) ? `{${showValues(value, depthLevel + 1)}\n${makeGap(gaps + signAndGap)}}` : value;
+      };
+
+      return `${makeGap(gaps)}- ${prop.key}: ${isObj(prop.valueBefore)}\n${makeGap(gaps)}+ ${prop.key}: ${isObj(prop.valueAfter)}`;
+    }
+
+    if (_.isObject(prop.valueBefore)) {
+      return `${makeGap(gaps)}${showStatus(prop.status)} ${prop.key}: {${showValues(prop.valueBefore, depthLevel + 1)}\n${makeGap(gaps + signAndGap)}}`;
     }
     return `${makeGap(gaps)}${showStatus(prop.status)} ${prop.key}: ${prop.valueBefore}`;
   };
