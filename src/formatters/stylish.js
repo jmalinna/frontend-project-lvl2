@@ -9,9 +9,8 @@ const showStatus = (status) => {
     case 'deleted':
       return '-';
     default:
-      console.log(`Unknown status "${status}"`);
+      return `Unknown status "${status}"`;
   }
-  return `Unknown status "${status}"`;
 };
 
 const isObject = (value, gaps, depthLevel, func) => {
