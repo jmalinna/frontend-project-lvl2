@@ -1,3 +1,5 @@
+# Difference calculator for two configuration files
+
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/julimalinna/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/julimalinna/frontend-project-lvl2/actions)
 [![Actions Status](https://github.com/julimalinna/frontend-project-lvl2/workflows/Super-Linter/badge.svg)](https://github.com/julimalinna/frontend-project-lvl2/actions)
