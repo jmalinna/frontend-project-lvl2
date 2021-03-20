@@ -24,7 +24,7 @@ const innerMakePlain = (tree, key = '') => {
       case 'added':
         return `Property '${key}${prop.key}' was added with value: ${stringify(prop.valueBefore)}`;
       default:
-        return `Unknown status ${prop.status}`;
+        return `Unknown status: ${prop.status}`;
     }
   };
   const editedOutput = tree.map((prop) => makeFlat(prop));
