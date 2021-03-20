@@ -19,29 +19,31 @@ const setGaps = (num, gap = ' ') => gap.repeat(num);
 
 const showValues = (value, depthLevel) => {
   const gaps = depthLevel * gapDifference;
+  const depth = 1;
   const keys = Object.keys(value);
   const innerValue = keys.map((key) => {
     if (_.isObject(value[key])) {
-      return `\n${setGaps(gaps)}${key}: {${showValues(value[key], depthLevel + 1)}\n${setGaps(gaps)}}`;
+      return `\n${setGaps(gaps)}${key}: {${showValues(value[key], depthLevel + depth)}\n${setGaps(gaps)}}`;
     }
     return `\n${setGaps(gaps)}${key}: ${value[key]}`;
   });
   return innerValue.join('');
 };
 
-const makeStylish = (tree, depthLevel = 1) => {
+const innerMakeStylish = (tree, depthLevel = 1) => {
   const gapAndSign = 2;
+  const depth = 1;
   const gaps = depthLevel * gapDifference - gapAndSign;
   const isObj = (value) => {
     if (Array.isArray(value)) {
       return `[${value.join(', ')}]`;
     }
-    return _.isObject(value) ? `{${showValues(value, depthLevel + 1)}\n${setGaps(gaps + gapAndSign)}}` : value;
+    return _.isObject(value) ? `{${showValues(value, depthLevel + depth)}\n${setGaps(gaps + gapAndSign)}}` : value;
   };
 
   const makeFlat = (prop) => {
     if (prop.nodes) {
-      const nestedValue = makeStylish(prop.nodes, depthLevel + 1);
+      const nestedValue = innerMakeStylish(prop.nodes, depthLevel + depth);
       return `${setGaps(gaps)}${setStatus(prop.status)} ${prop.key}: ${nestedValue}`;
     }
 
@@ -53,7 +55,8 @@ const makeStylish = (tree, depthLevel = 1) => {
   };
 
   const makeString = tree.map((prop) => makeFlat(prop)).join('\n');
-  const print = `{\n${makeString}\n${setGaps((depthLevel - 1) * gapDifference)}}`;
+  const print = `{\n${makeString}\n${setGaps(gaps - gapAndSign)}}`;
   return print;
 };
+const makeStylish = (tree) => innerMakeStylish(tree);
 export default makeStylish;
