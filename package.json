@@ -2,7 +2,7 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "Node-js package with which you could compare two configuration files and see a difference.",
-  "main": "src/index.js",
+  "main": "./index.js",
   "scripts": {
     "test": "npx jest"
   },

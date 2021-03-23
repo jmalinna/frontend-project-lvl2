@@ -22,7 +22,7 @@ const createTree = (obj1, obj2) => {
       return { key, status: 'unchanged', valueBefore: obj1[key] };
     }
     if (valuesAreObjects) {
-      return { key, status: 'unchanged key', nodes: createTree(obj1[key], obj2[key]) };
+      return { key, status: 'nested', children: createTree(obj1[key], obj2[key]) };
     }
 
     return {

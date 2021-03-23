@@ -5,7 +5,7 @@ const stringify = (value) => {
     return '[complex value]';
   }
   if (typeof value === 'string') {
-    return value === '' ? "''" : `'${value}'`;
+    return `'${value}'`;
   }
   return value;
 };
@@ -15,8 +15,8 @@ const innerMakePlain = (tree, key = '') => {
     switch (prop.status) {
       case 'unchanged':
         return '';
-      case 'unchanged key':
-        return innerMakePlain(prop.nodes, `${key}${prop.key}.`);
+      case 'nested':
+        return innerMakePlain(prop.children, `${key}${prop.key}.`);
       case 'deleted':
         return `Property '${key}${prop.key}' was removed`;
       case 'changed':

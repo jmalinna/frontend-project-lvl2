@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
-const setStatus = (status) => {
+const getStatus = (status) => {
   switch (status) {
-    case 'unchanged key':
+    case 'nested':
     case 'unchanged':
       return ' ';
     case 'added':
@@ -15,7 +15,7 @@ const setStatus = (status) => {
 };
 
 const gapDifference = 4;
-const setGaps = (num, gap = ' ') => gap.repeat(num);
+const getGaps = (num) => ' '.repeat(num);
 
 const showValues = (value, depthLevel) => {
   const gaps = depthLevel * gapDifference;
@@ -23,9 +23,9 @@ const showValues = (value, depthLevel) => {
   const keys = Object.keys(value);
   const innerValue = keys.map((key) => {
     if (_.isObject(value[key])) {
-      return `\n${setGaps(gaps)}${key}: {${showValues(value[key], depthLevel + depth)}\n${setGaps(gaps)}}`;
+      return `\n${getGaps(gaps)}${key}: {${showValues(value[key], depthLevel + depth)}\n${getGaps(gaps)}}`;
     }
-    return `\n${setGaps(gaps)}${key}: ${value[key]}`;
+    return `\n${getGaps(gaps)}${key}: ${value[key]}`;
   });
   return innerValue.join('');
 };
@@ -38,24 +38,24 @@ const innerMakeStylish = (tree, depthLevel = 1) => {
     if (Array.isArray(value)) {
       return `[${value.join(', ')}]`;
     }
-    return _.isObject(value) ? `{${showValues(value, depthLevel + depth)}\n${setGaps(gaps + gapAndSign)}}` : value;
+    return _.isObject(value) ? `{${showValues(value, depthLevel + depth)}\n${getGaps(gaps + gapAndSign)}}` : value;
   };
 
   const makeFlat = (prop) => {
-    if (prop.nodes) {
-      const nestedValue = innerMakeStylish(prop.nodes, depthLevel + depth);
-      return `${setGaps(gaps)}${setStatus(prop.status)} ${prop.key}: ${nestedValue}`;
+    if (prop.children) {
+      const nestedValue = innerMakeStylish(prop.children, depthLevel + depth);
+      return `${getGaps(gaps)}${getStatus(prop.status)} ${prop.key}: ${nestedValue}`;
     }
 
     if (prop.status === 'changed') {
-      return `${setGaps(gaps)}- ${prop.key}: ${isObj(prop.valueBefore)}\n${setGaps(gaps)}+ ${prop.key}: ${isObj(prop.valueAfter)}`;
+      return `${getGaps(gaps)}- ${prop.key}: ${isObj(prop.valueBefore)}\n${getGaps(gaps)}+ ${prop.key}: ${isObj(prop.valueAfter)}`;
     }
 
-    return `${setGaps(gaps)}${setStatus(prop.status)} ${prop.key}: ${isObj(prop.valueBefore)}`;
+    return `${getGaps(gaps)}${getStatus(prop.status)} ${prop.key}: ${isObj(prop.valueBefore)}`;
   };
 
   const makeString = tree.map((prop) => makeFlat(prop)).join('\n');
-  const print = `{\n${makeString}\n${setGaps(gaps - gapAndSign)}}`;
+  const print = `{\n${makeString}\n${getGaps(gaps - gapAndSign)}}`;
   return print;
 };
 const makeStylish = (tree) => innerMakeStylish(tree);

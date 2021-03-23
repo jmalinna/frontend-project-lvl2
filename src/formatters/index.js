@@ -1,7 +1,7 @@
 import makePlain from './plain.js';
 import makeStylish from './stylish.js';
 
-const selectFormatter = (tree, formatName) => {
+const formatData = (tree, formatName) => {
   switch (formatName) {
     case 'stylish':
       return makeStylish(tree);
@@ -13,4 +13,4 @@ const selectFormatter = (tree, formatName) => {
       return `Unknown formatter ${formatName}. Formatter must be stylish, plain or json`;
   }
 };
-export default selectFormatter;
+export default formatData;
