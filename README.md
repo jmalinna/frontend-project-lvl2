@@ -19,4 +19,4 @@
 <a href="https://asciinema.org/a/397280" target="_blank"><img src="https://asciinema.org/a/397280.svg" /></a>
 
 <h3>Json output for a comparison of two files</h3>
-<a href="https://asciinema.org/a/GQY5htCspqBKpUdwKCtNMCoRP" target="_blank"><img src="https://asciinema.org/a/GQY5htCspqBKpUdwKCtNMCoRP.svg" /></a>
+<a href="https://asciinema.org/a/406274" target="_blank"><img src="https://asciinema.org/a/406274.svg" /></a>
