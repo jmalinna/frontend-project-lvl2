@@ -10,7 +10,7 @@ const formatData = (tree, formatName) => {
     case 'json':
       return JSON.stringify(tree);
     default:
-      return `Unknown formatter ${formatName}. Formatter must be stylish, plain or json`;
+      throw new Error(`Unknown formatter: '${formatName}'! Formatter must be stylish, plain or json`);
   }
 };
 export default formatData;

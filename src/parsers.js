@@ -8,7 +8,7 @@ const parse = (format, data) => {
     case '.yml':
       return yaml.load(data);
     default:
-      return 'Unappropriate file format. Format must be .json, .yaml or .yml';
+      throw new Error(`Unknown file format: '${format}'!`);
   }
 };
 export default parse;

@@ -10,7 +10,7 @@ const getStatus = (status) => {
     case 'deleted':
       return '-';
     default:
-      return `Unknown status: ${status}`;
+      throw new Error(`Unknown status: '${status}'!`);
   }
 };
 
