@@ -7,21 +7,16 @@ const createTree = (obj1, obj2) => {
   const sortedKeys = _.sortBy(allKeys);
 
   const compareContents = (key) => {
-    const obj1HasKey = keys1.includes(key);
-    const obj2HasKey = keys2.includes(key);
-    const equalValues = _.isEqual(obj1[key], obj2[key]);
-    const valuesAreObjects = _.isObject(obj1[key]) && _.isObject(obj2[key]);
-
-    if (!obj2HasKey) {
+    if (!keys2.includes(key)) {
       return { key, status: 'deleted', valueBefore: obj1[key] };
     }
-    if (!obj1HasKey) {
+    if (!keys1.includes(key)) {
       return { key, status: 'added', valueBefore: obj2[key] };
     }
-    if (equalValues) {
+    if (_.isEqual(obj1[key], obj2[key])) {
       return { key, status: 'unchanged', valueBefore: obj1[key] };
     }
-    if (valuesAreObjects) {
+    if (_.isObject(obj1[key]) && _.isObject(obj2[key])) {
       return { key, status: 'nested', children: createTree(obj1[key], obj2[key]) };
     }
 
